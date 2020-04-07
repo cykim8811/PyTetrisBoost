@@ -9,7 +9,8 @@ module1 = Extension('PyTetrisBoost',
     include_dirs = ['E:\\Programs\\boost_1_72_0\\boost_1_72_0',
                     'C:\\Dev\\SDL2\\include'],
     library_dirs = ['E:\\Programs\\boost_1_72_0\\boost_1_72_0\\stage\\lib',
-                    'C\\Dev\\SDL2\\lib\\x64'],
+                    'C:\\Dev\\SDL2\\lib\\x64'],
+    libraries = ['SDL2'],
     sources = dirlist)
 
 setup(

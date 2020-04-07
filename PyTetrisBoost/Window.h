@@ -1,15 +1,20 @@
 #pragma once
 #include "SDL.h"
+#include "State.h"
 
 class Window {
 public:
 	Window();
 	~Window();
-	int tick(); // 0: end, 1: normal
+	int update(); // 0: end, 1: normal
+	State state;
 private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 
-	int handle_event(const SDL_Event& e);
+	void handle_event(const SDL_Event& e);
+	void draw_screen();
+	void draw_block(int x, int y, int type, int size);
+
 };
 
