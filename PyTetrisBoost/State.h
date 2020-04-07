@@ -22,6 +22,8 @@ public:
 	State use_hold();
 	bool available(Pos pos);
 	State put(Pos pos);
+
+	vector<State> transitions();
 private:
 	vector<int> bag;
 	int pop_block();

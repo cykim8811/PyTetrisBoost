@@ -72,7 +72,7 @@ Block::Block(int _size, vector<int> _data) {
 		data[r + 1] = new int[size * size];
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
-				data[r + 1][y + x * size] = data[r][size - 1 - x + y * size];
+				data[r + 1][y + x * size] = data[r][(size - 1 - x) + y * size];
 			}
 		}
 	}

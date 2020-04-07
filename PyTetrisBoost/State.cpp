@@ -64,3 +64,7 @@ State State::put(Pos pos) {
 	ret.next_block.erase(ret.next_block.begin());
 	return ret;
 }
+
+vector<State> State::transitions() {
+	return { use_hold() };
+}
