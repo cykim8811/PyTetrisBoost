@@ -1,5 +1,15 @@
 #include "State.h"
 
+template <class T>
+boost::python::list toPythonList(std::vector<T> vector) {
+	typename std::vector<T>::iterator iter;
+	boost::python::list list;
+	for (iter = vector.begin(); iter != vector.end(); ++iter) {
+		list.append(*iter);
+	}
+	return list;
+}
+
 State::State() {
 	hold = -1;
 	hold_used = false;
@@ -65,6 +75,6 @@ State State::put(Pos pos) {
 	return ret;
 }
 
-vector<State> State::transitions() {
-	return { use_hold() };
+boost::python::list State::transitions() {
+	return toPythonList(get_transitions(*this));
 }

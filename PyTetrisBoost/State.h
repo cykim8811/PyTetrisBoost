@@ -1,9 +1,13 @@
 #pragma once
+#define BOOST_PYTHON_STATIC_LIB
 #include <vector>
 #include <algorithm>
 #include <ctime>
 #include <random>
 #include "Map.h"
+#include <boost/python.hpp>
+#include "FindPath.h"
+
 const int nextblock_count = 5;
 
 using namespace std;
@@ -23,7 +27,7 @@ public:
 	bool available(Pos pos);
 	State put(Pos pos);
 
-	vector<State> transitions();
+	boost::python::list transitions();
 private:
 	vector<int> bag;
 	int pop_block();

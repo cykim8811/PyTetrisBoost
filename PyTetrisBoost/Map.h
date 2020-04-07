@@ -18,5 +18,5 @@ public:
 	bool available(int type, Pos pos);
 	void put(int type, Pos pos);
 	int data[Map::w * Map::h];
-	int at(int x, int y);
+	int at(int x, int y) { return data[x * Map::h + y]; }
 };

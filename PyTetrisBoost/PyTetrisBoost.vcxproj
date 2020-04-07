@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="FindPath.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="PyTetrisBoost.cpp" />
     <ClCompile Include="State.cpp" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="FindPath.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Window.h" />

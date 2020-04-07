@@ -41,7 +41,3 @@ void Map::put(int type, Pos pos) {
 		}
 	}
 }
-
-int Map::at(int x, int y) {
-	return data[x * Map::h + y];
-}

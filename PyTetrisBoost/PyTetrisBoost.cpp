@@ -22,5 +22,6 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
         .def("available", &State::available)
         .def("use_hold", &State::use_hold)
         .def("put", &State::put)
+        .def("transitions", &State::transitions)
         ;
 }
