@@ -50,7 +50,7 @@ State::State(const State& origin) {
 
 int State::pop_block() {
 	if (bag.size() == 0) {
-		srand(unsigned(time(0)));
+		srand((unsigned int)time(0));
 		for (int i = 0; i < 7; i++)
 			bag.push_back(i);
 		random_shuffle(bag.begin(), bag.end());
@@ -85,6 +85,8 @@ State State::put(Pos pos) {
 	ret.last_dscore = 0;
 	ret.map.put(ret.next_block[0], pos);
 	
+	ret.hold_used = false;
+
 	bool tspin = false;
 	// T-spin detection
 	if (next_block[0] == 5) {

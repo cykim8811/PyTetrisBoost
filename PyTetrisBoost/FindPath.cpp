@@ -93,8 +93,10 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
     flood_fill(map, scr, type, x + 1, y, r);
     flood_fill(map, scr, type, x - 1, y, r);
     flood_fill(map, scr, type, x, y + 1, r);
-    flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
-    flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
+    if (type != 3) {
+        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
+        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
+    }
 }
 
 vector<State> get_transitions(State& state) {
@@ -136,12 +138,14 @@ vector<State> get_transitions(State& state) {
             for (int my = 0; my < Map::h + off_h; my++) {
                 int current = get_map(freemap, mx, my, br);
                 if (prev == 2 && current == 1) {
-                    ret.push_back(state.put(Pos{ mx - 2, my - 4 - 1, br }));
+                    if (state.available(Pos{ mx - 2, my - 4 - 1, br }))
+                        ret.push_back(state.put(Pos{ mx - 2, my - 4 - 1, br }));
                 }
                 prev = current;
             }
             if (prev == 2) {
-                ret.push_back(state.put(Pos{ mx - off_x, (Map::h + off_h) - off_y - 1, br }));
+                if (state.available(Pos{ mx - off_x, (Map::h + off_h) - off_y - 1, br }))
+                    ret.push_back(state.put(Pos{ mx - off_x, (Map::h + off_h) - off_y - 1, br }));
             }
         }
     }
