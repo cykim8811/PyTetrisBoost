@@ -24,14 +24,18 @@ public:
 	bool hold_used;
 	int combo;
 	bool btb;
+	int last_dscore;
+
+	boost::python::list get_next_block();
 
 	State use_hold();
 	bool available(Pos pos);
 	State put(Pos pos);
 
 	boost::python::list transitions();
-
 	np::ndarray get_screen();
+
+
 
 private:
 	vector<int> bag;

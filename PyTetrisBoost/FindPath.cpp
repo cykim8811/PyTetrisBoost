@@ -99,7 +99,8 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
 
 vector<State> get_transitions(State& state) {
     vector<State> ret;
-    ret.push_back(state.use_hold());
+    if (!state.hold_used)
+        ret.push_back(state.use_hold());
 
     Block& block = Shape[state.next_block[0]];
     int freemap[(Map::w + off_w) * (Map::h + off_h) * 4] = { 0 };
@@ -127,10 +128,7 @@ vector<State> get_transitions(State& state) {
         }
     }
 
-
-
     flood_fill(&freemap[0], state.map, state.next_block[0], 5, 0, 0);
-
 
     for (int br = 0; br < 4; br++) {
         for (int mx = 0; mx < Map::w + off_w; mx++) {

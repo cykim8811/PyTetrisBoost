@@ -23,10 +23,15 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
 
     class_<State>("State", init<>())
         .def_readwrite("hold_used", &State::hold_used)
+        .def_readwrite("block_hold", &State::hold)
+        .def_readwrite("combo", &State::combo)
+        .def_readwrite("btb", &State::btb)
+        .def_readwrite("dscore", &State::last_dscore)
+        .def("next_block", &State::get_next_block)
         .def("available", &State::available)
         .def("use_hold", &State::use_hold)
         .def("put", &State::put)
         .def("transitions", &State::transitions)
-        .def("get_screen", &State::get_screen)
+        .def("screen", &State::get_screen)
         ;
 }
