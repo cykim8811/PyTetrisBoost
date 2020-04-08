@@ -1,5 +1,7 @@
 #define BOOST_PYTHON_STATIC_LIB
+#define BOOST_NUMPY_STATIC_LIB
 #include <boost/python.hpp>
+#include <boost/python/numpy.hpp>
 #include <iostream>
 
 #include "Window.h"
@@ -10,6 +12,8 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(PyTetrisBoost)
 {
+    np::initialize();
+
     class_<Window>("Window", init<>())
         .def("update", &Window::update)
         .def_readwrite("state", &Window::state)
@@ -23,5 +27,6 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
         .def("use_hold", &State::use_hold)
         .def("put", &State::put)
         .def("transitions", &State::transitions)
+        .def("get_screen", &State::get_screen)
         ;
 }

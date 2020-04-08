@@ -1,4 +1,7 @@
+
 #include "State.h"
+#include "FindPath.h"
+#include <array>
 
 template <class T>
 boost::python::list toPythonList(std::vector<T> vector) {
@@ -77,4 +80,13 @@ State State::put(Pos pos) {
 
 boost::python::list State::transitions() {
 	return toPythonList(get_transitions(*this));
+}
+
+
+
+np::ndarray State::get_screen() {
+	Py_intptr_t shape[2] = { Map::w, Map::h };
+	np::ndarray result = np::zeros(2, shape, np::dtype::get_builtin<int>());
+	copy(begin(map.data), end(map.data), reinterpret_cast<int*>(result.get_data()));
+	return result;
 }

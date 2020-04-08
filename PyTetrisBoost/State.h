@@ -1,16 +1,18 @@
 #pragma once
 #define BOOST_PYTHON_STATIC_LIB
+#define BOOST_NUMPY_STATIC_LIB
 #include <vector>
 #include <algorithm>
 #include <ctime>
 #include <random>
 #include "Map.h"
 #include <boost/python.hpp>
-#include "FindPath.h"
+#include <boost/python/numpy.hpp>
 
 const int nextblock_count = 5;
 
 using namespace std;
+namespace np = boost::python::numpy;
 
 class State {
 public:
@@ -28,6 +30,9 @@ public:
 	State put(Pos pos);
 
 	boost::python::list transitions();
+
+	np::ndarray get_screen();
+
 private:
 	vector<int> bag;
 	int pop_block();

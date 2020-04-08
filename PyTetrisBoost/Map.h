@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include "Block.h"
+#include <iostream>
 
 using namespace std;
 

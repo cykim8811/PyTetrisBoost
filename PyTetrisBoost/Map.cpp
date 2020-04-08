@@ -18,13 +18,15 @@ bool Map::available(int type, Pos pos) {
 				continue;
 			int tx = pos.x + x,
 				ty = pos.y + y;
-			if (tx < 0 || tx >= Map::w || ty < 0 || ty >= Map::h)
+			if (tx < 0 || tx >= Map::w || ty >= Map::h)
 				return false;
+			if (ty < 0)
+				continue;
 			if (data[tx * Map::h + ty])
 				return false;
-			return true;
 		}
 	}
+	return true;
 }
 
 void Map::put(int type, Pos pos) {
