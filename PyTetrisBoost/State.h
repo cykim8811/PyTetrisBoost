@@ -33,8 +33,10 @@ public:
 	State put(Pos pos);
 
 	boost::python::list transitions();
+	np::ndarray compile(State state);
+	np::ndarray compile_transitions();
+	vector<State> transitions_vector();
 	np::ndarray get_screen();
-
 
 
 private:

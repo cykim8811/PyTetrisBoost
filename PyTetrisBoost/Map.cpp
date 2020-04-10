@@ -18,7 +18,7 @@ bool Map::available(int type, Pos pos) {
 				continue;
 			int tx = pos.x + x,
 				ty = pos.y + y;
-			if (tx < 0 || tx >= Map::w || ty >= Map::h || ty < -1)
+			if (tx < 0 || tx >= Map::w || ty >= Map::h || ty < 0)
 				return false;
 			if (ty < 0)
 				continue;

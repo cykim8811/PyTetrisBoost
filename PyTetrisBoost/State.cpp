@@ -83,8 +83,15 @@ bool State::available(Pos pos) {
 State State::put(Pos pos) {
 	State ret(*this);
 	ret.last_dscore = 0;
-	ret.map.put(ret.next_block[0], pos);
-	
+	if (ret.map.available(ret.next_block[0], pos)) {
+		ret.map.put(ret.next_block[0], pos);
+	}
+	else {
+		// When dead
+		State rett;
+		rett.last_dscore = -100;
+		return rett;
+	}
 	ret.hold_used = false;
 
 	bool tspin = false;
@@ -169,6 +176,10 @@ boost::python::list State::transitions() {
 	return toPythonList(get_transitions(*this));
 }
 
+vector<State> State::transitions_vector() {
+	return get_transitions(*this);
+}
+
 boost::python::list State::get_next_block() {
 	return toPythonList(next_block);
 }
@@ -178,5 +189,67 @@ np::ndarray State::get_screen() {
 	Py_intptr_t shape[2] = { Map::w, Map::h };
 	np::ndarray result = np::zeros(2, shape, np::dtype::get_builtin<int>());
 	copy(begin(map.data), end(map.data), reinterpret_cast<int*>(result.get_data()));
+	return result;
+}
+
+
+/* Format:
+Map[0]		1		map of S_0
+Next		7		next block one-hot
+Hold		7		hold block one-hot
+Next[2]		7		nnext block one-hot
+combo		1		current combo int
+btb			1		back-to-back bool
+Map[1]		1		map of S_1
+*/
+np::ndarray State::compile(State state) {
+	Py_intptr_t shape[3] = { Map::w, Map::h, 25};
+	np::ndarray result = np::zeros(3, shape, np::dtype::get_builtin<int>());
+	int* target = reinterpret_cast<int*>(result.get_data());
+	for (int x = 0; x < Map::w; x++) {
+		for (int y = 0; y < Map::h; y++) {
+			target[(x * Map::h + y) * 25 + 0] = (map.at(x, y) != 0);
+			for (int c = 0; c < 7; c++) {
+				target[(x * Map::h + y) * 25 + 1 + 7 * 0 + c] = (next_block[0] == c);
+			}
+			for (int c = 0; c < 7; c++) {
+				target[(x * Map::h + y) * 25 + 1 + 7 * 1 + c] = (hold == c);
+			}
+			for (int c = 0; c < 7; c++) {
+				target[(x * Map::h + y) * 25 + 1 + 7 * 2 + c] = (next_block[1] == c);
+			}
+			target[(x * Map::h + y) * 25 + 22] = combo;
+			target[(x * Map::h + y) * 25 + 23] = btb;
+			target[(x * Map::h + y) * 25 + 24] = (state.map.at(x, y) != 0);
+		}
+	}
+	return result;
+}
+
+np::ndarray State::compile_transitions() {
+	vector<State> trans = transitions_vector();
+	Py_intptr_t shape[4] = { trans.size(), Map::w, Map::h, 25 };
+	np::ndarray result = np::zeros(4, shape, np::dtype::get_builtin<int>());
+	int* target = reinterpret_cast<int*>(result.get_data());
+	for (int t = 0; t < trans.size(); t++) {
+		for (int x = 0; x < Map::w; x++) {
+			for (int y = 0; y < Map::h; y++) {
+				int offset = ((t * Map::w + x) * Map::h + y) * 25;
+				target[offset + 0] = (map.at(x, y) != 0);
+				for (int c = 0; c < 7; c++) {
+					target[offset + 1 + 7 * 0 + c] = (next_block[0] == c);
+				}
+				for (int c = 0; c < 7; c++) {
+					target[offset + 1 + 7 * 1 + c] = (hold == c);
+				}
+				for (int c = 0; c < 7; c++) {
+					target[offset + 1 + 7 * 2 + c] = (next_block[1] == c);
+				}
+				target[offset + 22] = combo;
+				target[offset + 23] = btb;
+				target[offset + 24] = (trans[t].map.at(x, y) != 0);
+			}
+		}
+	}
 	return result;
 }
