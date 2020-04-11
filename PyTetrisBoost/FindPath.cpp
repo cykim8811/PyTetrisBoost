@@ -95,17 +95,18 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
     flood_fill(map, scr, type, x, y + 1, r);
     if (type != 3) {
         flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
-        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
+        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 3));
     }
 }
 
 vector<State> get_transitions(State& state) {
     State holded;
     vector<State> ret;
-    if (!state.hold_used)
+    if (!state.hold_used) {
         holded = state.use_hold();
-        vector<State> hold_transitions = get_transitions(holded);
-        ret.insert(ret.end(), hold_transitions.begin(), hold_transitions.end());
+        ret = get_transitions(holded);
+    }
+        
 
     Block& block = Shape[state.next_block[0]];
     int freemap[(Map::w + off_w) * (Map::h + off_h) * 4] = { 0 };
