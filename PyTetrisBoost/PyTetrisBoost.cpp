@@ -38,5 +38,6 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
         .def("compile", &State::compile)
         .def("compile_transitions", &State::compile_transitions)
         .def("add_trash", &State::add_trash)
+        .def("copy", &State::_copy)
         ;
 }

@@ -34,6 +34,7 @@ State::State() {
 	last_dscore = 0;
 }
 
+
 State::State(const State& origin) {
 	hold = origin.hold;
 	hold_used = origin.hold_used;
@@ -46,14 +47,19 @@ State::State(const State& origin) {
 		map.data[i] = origin.map.data[i];
 	}
 	last_dscore = origin.last_dscore;
+	trash_list = origin.trash_list;
+}
+
+State State::_copy() {
+	return State(*this);
 }
 
 int State::pop_block() {
 	if (bag.size() == 0) {
-		srand((unsigned int)time(0));
+		auto rng = default_random_engine{};
 		for (int i = 0; i < 7; i++)
 			bag.push_back(i);
-		random_shuffle(bag.begin(), bag.end());
+		shuffle(bag.begin(), bag.end(), rng);
 	}
 	int ret = bag.back();
 	bag.pop_back();
@@ -111,7 +117,7 @@ State State::put(Pos pos) {
 			tspin = true;
 		}
 	}
-	
+
 	// Clear Lines
 	int clear_count = 0;
 	for (int y = 19; y >= 0; y--) {
@@ -213,7 +219,7 @@ btb			1		back-to-back bool
 Map[1]		1		map of S_1
 */
 np::ndarray State::compile(State state) {
-	Py_intptr_t shape[3] = { Map::w, Map::h, 25};
+	Py_intptr_t shape[3] = { Map::w, Map::h, 25 };
 	np::ndarray result = np::zeros(3, shape, np::dtype::get_builtin<int>());
 	int* target = reinterpret_cast<int*>(result.get_data());
 	for (int x = 0; x < Map::w; x++) {

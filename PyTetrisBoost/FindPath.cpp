@@ -1,4 +1,5 @@
 #include "FindPath.h"
+#include <random>
 
 const int 
     off_x = 2,
@@ -106,31 +107,39 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
     }
 }
 
-vector<State> get_transitions(State& _state, vector<int> trash) {
+vector<State> get_transitions(State& _state) {
     State state(_state);
-    for (int i = 0; i < trash.size(); i++) {
+    for (int i = 0; i < state.trash_list.size(); i++) {
         bool isany = false;
         for (int x = 0; x < Map::w; x++) {
-            if (state.map.at(x, trash[i] - 1)) {
+            if (state.map.at(x, state.trash_list[i] - 1)) {
                 isany = true;
                 break;
             }
         }
         if (isany)
             return {};
-        srand(time(0));
-        int rline = rand() % Map::w;
-        for (int y = trash[i]; y < Map::h; y++) {
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<int> dis(0, 9);
+        int rline = dis(gen);
+        for (int y = state.trash_list[i]; y < Map::h; y++) {
             for (int x = 0; x < Map::w; x++) {
-                state.map.at(x, y - trash[i]) = state.map.at(x, y);
+                state.map.at(x, y - state.trash_list[i]) = state.map.at(x, y);
             }
         }
-        for (int y = Map::h - trash[i]; y < Map::y; y++) {
+        for (int y = Map::h - state.trash_list[i]; y < Map::h; y++) {
             for (int x = 0; x < Map::w; x++) {
-                state.map.at(x, y) = 8;
+                if (x == rline) {
+                    state.map.at(x, y) = 0;
+                }
+                else {
+                    state.map.at(x, y) = 8;
+                }
             }
         }
     }
+    state.trash_list.clear();
 
     State holded;
     vector<State> ret;

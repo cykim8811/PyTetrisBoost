@@ -32,6 +32,8 @@ public:
 	bool available(Pos pos);
 	State put(Pos pos);
 
+	State _copy();
+
 	boost::python::list transitions();
 	np::ndarray compile(State state);
 	np::ndarray compile_transitions();
@@ -40,10 +42,10 @@ public:
 	void set_screen(np::ndarray target);
 
 	void add_trash(int n);
+	vector<int> trash_list;
 
 private:
 	vector<int> bag;
 	int pop_block();
-	vector<int> trash_list;
 };
 
