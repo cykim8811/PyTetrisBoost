@@ -34,6 +34,7 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
         .def("put", &State::put)
         .def("transitions", &State::transitions)
         .def("screen", &State::get_screen)
+        .def("set_screen", &State::set_screen)
         .def("compile", &State::compile)
         .def("compile_transitions", &State::compile_transitions)
         ;

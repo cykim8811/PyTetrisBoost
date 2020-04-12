@@ -56,13 +56,14 @@ Pos rotate(Map& map, int type, Pos pos, int n) {
     rp = rp % 4;
 
     int dirind;
-    if (rp == 1)
+    if (n == 1)
         dirind = 0;
     else
         dirind = 1;
 
-    if (type == 3)
+    if (type == 3) {
         return Pos{ pos.x, pos.y, rp };
+    }
     else if (type == 0) {
         for (int i = 0; i < 5; i++) {
             Pos cp{ pos.x + wallkick_l[pos.r][dirind][i][0], pos.y - wallkick_l[pos.r][dirind][i][1], rp % 4 };
@@ -82,8 +83,8 @@ Pos rotate(Map& map, int type, Pos pos, int n) {
     return Pos{ 0, 0, -1 };
 }
 
-inline void flood_fill(int* map, Map& scr, int type, Pos pos) {
-    flood_fill(map, scr, type, pos.x, pos.y, pos.r);
+void flood_fill(int* map, Map& scr, int type, Pos pos) {
+    flood_fill(map, scr, type, pos.x + off_x, pos.y + off_y, pos.r);
 }
 
 void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
@@ -94,8 +95,14 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
     flood_fill(map, scr, type, x - 1, y, r);
     flood_fill(map, scr, type, x, y + 1, r);
     if (type != 3) {
-        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 1));
-        flood_fill(map, scr, type, rotate(scr, type, Pos{ x, y, r }, 3));
+        Pos rot1 = rotate(scr, type, Pos{ x - off_x, y - off_y, r }, 1);
+        Pos rot2 = rotate(scr, type, Pos{ x - off_x, y - off_y, r }, -1);
+        if (rot1.r != -1) {
+            flood_fill(map, scr, type, rot1);
+        }
+        if (rot2.r != -1) {
+            flood_fill(map, scr, type, rot2);
+        }
     }
 }
 
@@ -156,6 +163,7 @@ vector<State> get_transitions(State& state) {
     return ret;
 }
 /*
+
     for (int br = 0; br < 4; br++) {
         for (int mx = 0; mx < Map::w + off_w; mx++) {
             for (int my = 0; my < Map::h + off_h; my++) {
@@ -168,4 +176,5 @@ vector<State> get_transitions(State& state) {
             }
         }
     }
+
 */

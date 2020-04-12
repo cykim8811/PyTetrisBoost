@@ -37,6 +37,7 @@ public:
 	np::ndarray compile_transitions();
 	vector<State> transitions_vector();
 	np::ndarray get_screen();
+	void set_screen(np::ndarray target);
 
 
 private:

@@ -192,6 +192,12 @@ np::ndarray State::get_screen() {
 	return result;
 }
 
+void State::set_screen(np::ndarray target) {
+	int* target_pointer = reinterpret_cast<int*>(target.get_data());
+	for (int i = 0; i < 200; i++) {
+		map.data[i] = target_pointer[i];
+	}
+}
 
 /* Format:
 Map[0]		1		map of S_0
