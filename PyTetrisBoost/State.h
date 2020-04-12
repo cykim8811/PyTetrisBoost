@@ -39,9 +39,11 @@ public:
 	np::ndarray get_screen();
 	void set_screen(np::ndarray target);
 
+	void add_trash(int n);
 
 private:
 	vector<int> bag;
 	int pop_block();
+	vector<int> trash_list;
 };
 

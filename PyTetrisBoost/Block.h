@@ -10,4 +10,4 @@ typedef struct Block {
 };
 
 extern Block Shape[7];
-extern int TileColor[7][3];
+extern int TileColor[8][3];

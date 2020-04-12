@@ -37,5 +37,6 @@ BOOST_PYTHON_MODULE(PyTetrisBoost)
         .def("set_screen", &State::set_screen)
         .def("compile", &State::compile)
         .def("compile_transitions", &State::compile_transitions)
+        .def("add_trash", &State::add_trash)
         ;
 }

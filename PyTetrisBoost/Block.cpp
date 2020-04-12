@@ -52,7 +52,7 @@ Block Shape[7] = {
     },
 };
 
-int TileColor[7][3]{
+int TileColor[8][3]{
     {48, 210, 230},
     {32, 48, 200},
     {230, 180, 48},
@@ -60,6 +60,7 @@ int TileColor[7][3]{
     {32, 170, 72},
     {210, 64, 235},
     {200, 48, 42},
+    {128, 128, 128},
 };
 
 Block::Block(int _size, vector<int> _data) {

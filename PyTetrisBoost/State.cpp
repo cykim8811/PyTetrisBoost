@@ -199,6 +199,10 @@ void State::set_screen(np::ndarray target) {
 	}
 }
 
+void State::add_trash(int n) {
+	trash_list.push_back(n);
+}
+
 /* Format:
 Map[0]		1		map of S_0
 Next		7		next block one-hot

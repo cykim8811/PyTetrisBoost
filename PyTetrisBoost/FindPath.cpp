@@ -106,7 +106,32 @@ void flood_fill(int* map, Map& scr, int type, int x, int y, int r) {
     }
 }
 
-vector<State> get_transitions(State& state) {
+vector<State> get_transitions(State& _state, vector<int> trash) {
+    State state(_state);
+    for (int i = 0; i < trash.size(); i++) {
+        bool isany = false;
+        for (int x = 0; x < Map::w; x++) {
+            if (state.map.at(x, trash[i] - 1)) {
+                isany = true;
+                break;
+            }
+        }
+        if (isany)
+            return {};
+        srand(time(0));
+        int rline = rand() % Map::w;
+        for (int y = trash[i]; y < Map::h; y++) {
+            for (int x = 0; x < Map::w; x++) {
+                state.map.at(x, y - trash[i]) = state.map.at(x, y);
+            }
+        }
+        for (int y = Map::h - trash[i]; y < Map::y; y++) {
+            for (int x = 0; x < Map::w; x++) {
+                state.map.at(x, y) = 8;
+            }
+        }
+    }
+
     State holded;
     vector<State> ret;
     if (!state.hold_used) {
